@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "freertos.h": "c",
+        "main.h": "c",
+        "console_uart.h": "c",
+        "stdbool.h": "c",
+        "stdlib.h": "c"
+    }
+}
