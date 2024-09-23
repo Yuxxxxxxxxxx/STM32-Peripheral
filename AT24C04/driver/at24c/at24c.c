@@ -146,8 +146,8 @@ cmd_fail:
 ******************************************************************************/
 uint8_t at24cx_writebytes(uint8_t *writebuf, uint16_t address, uint16_t size)
 {
-	uint16_t i,m;
-	uint16_t usAddr;
+	uint16_t i, m;
+	uint16_t addr;
  
 	/**
 	 *	写串行AT24CXPROM不像读操作可以连续读取很多字节，每次写操作只能在同一个page。
@@ -156,11 +156,11 @@ uint8_t at24cx_writebytes(uint8_t *writebuf, uint16_t address, uint16_t size)
 	 *	为了提高连续写的效率: 本函数采用page wirte操作。
 	 */
  
-	usAddr = address;
+	addr = address;
 	for (i = 0; i < size; i++)
 	{
 		// 当发送第1个字节或是页面首地址时，需要重新发起启动信号和地址
-		if ((i == 0) || (usAddr & (AT24CX_PAGE_SIZE - 1)) == 0)
+		if ((i == 0) || (addr & (AT24CX_PAGE_SIZE - 1)) == 0)
 		{
 			//　第0步：发停止信号，启动内部写操作
 			ctl_i2c_stop();
@@ -195,7 +195,7 @@ uint8_t at24cx_writebytes(uint8_t *writebuf, uint16_t address, uint16_t size)
 			// 第4步：发送字节地址，24C02只有256字节，因此1个字节就够了，如果是24C04以上，那么此处需要连发多个地址
 			if (AT24CX_ADDR_BYTES == 1)
 			{
-				ctl_i2c_sendbyte((uint8_t)usAddr);
+				ctl_i2c_sendbyte((uint8_t)addr);
 				if (ctl_i2c_waitack() != 0)
 				{
 					goto cmd_fail;	// AT24CXPROM器件无应答
@@ -203,13 +203,13 @@ uint8_t at24cx_writebytes(uint8_t *writebuf, uint16_t address, uint16_t size)
 			}
 			else
 			{
-				ctl_i2c_sendbyte(usAddr >> 8);
+				ctl_i2c_sendbyte(addr >> 8);
 				if (ctl_i2c_waitack() != 0)
 				{
 					goto cmd_fail;	// AT24CXPROM器件无应答
 				}
  
-				ctl_i2c_sendbyte(usAddr);
+				ctl_i2c_sendbyte(addr);
 				if (ctl_i2c_waitack() != 0)
 				{
 					goto cmd_fail;	// AT24CXPROM器件无应答
@@ -226,7 +226,7 @@ uint8_t at24cx_writebytes(uint8_t *writebuf, uint16_t address, uint16_t size)
 			goto cmd_fail;	// AT24CXPROM器件无应答
 		}
  
-		usAddr++;  // 地址增1
+		addr++;  // 地址增1
 	}
  
 	// 命令执行成功，发送I2C总线停止信号
