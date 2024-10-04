@@ -40,3 +40,20 @@ bool bl_button_pressed(void)
 {
     return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_0) == Bit_RESET;
 }
+
+/******************************************************************************
+ * @brief  按键消抖
+ * 
+ * @return 是否按下按键 true/false
+ * 
+******************************************************************************/
+bool button_trap_boot(void)
+{
+    if (bl_button_pressed())
+    {
+        bl_delay_ms(100); // 消抖
+        return bl_button_pressed();
+    }
+
+    return false;
+}

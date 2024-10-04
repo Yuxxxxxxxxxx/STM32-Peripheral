@@ -17,6 +17,7 @@
 
 void bl_button_init(void);
 bool bl_button_pressed(void);
+bool button_trap_boot(void);
 
 
 #endif /* __BL_BUTTON_H */

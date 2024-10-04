@@ -16,15 +16,47 @@ UINT fnum;                   /* 文件成功读写数量 */
 BYTE ReadBuffer[1024] = {0}; /* 读缓冲区 */
 BYTE WriteBuffer[] = "欢迎使用野火STM32 F407开发板 今天是个好日子，新建文件系统测试文件\r\n";
 
-static bool button_trap_boot(void)
+static char m_path_buf[256];
+ 
+int scan_files(char *dir_path)
 {
-    if (bl_button_pressed())
-    {
-        bl_delay_ms(100); // 消抖
-        return bl_button_pressed();
-    }
-
-    return false;
+	FILINFO m_file_info;
+	
+	if (!dir_path) {
+		return -1;
+	}
+	
+	DIR dir;             //定义目录对象
+	FRESULT res;         //定义结果对象
+	int ret = 0;
+ 
+	res = f_opendir(&dir, dir_path); //打开目录，返回状态 和 目录对象的指针
+	if(res != FR_OK) {
+		printf("opendir 失败  %d", res);
+		return -2;
+	}
+	
+	
+	for(;;)	{
+		res = f_readdir(&dir, &m_file_info);  //读取目录，返回状态 和 文件信息的指针
+		if(res != FR_OK || m_file_info.fname[0] == 0) 
+			break; //若打开失败 或 到结尾，则退出
+ 
+		if (!(m_file_info.fattrib & AM_DIR)) {
+			printf("是文件 %s/%s\n", dir_path, m_file_info.fname);
+			++ret;
+		}
+		else {
+			printf("是目录 %s\n", dir_path);
+			sprintf(m_path_buf, "%s/%s", dir_path, m_file_info.fname); //将新目录添加在原目录后面
+			res = scan_files(dir_path); //将新目录进行递归调用
+			if(res != FR_OK) 
+				break;
+		}
+	}
+ 
+	f_closedir(&dir);
+	return ret;
 }
 
 int main(void)
@@ -135,6 +167,8 @@ int main(void)
     }
     /* 不再读写，关闭文件 */
     f_close(&fnew);
+
+    scan_files("0:testdir");
 
     /* 不再使用文件系统，取消挂载文件系统 */
     f_mount(NULL, "0:", 1);
