@@ -127,6 +127,7 @@ void DebugMon_Handler(void)
   */
 void PendSV_Handler(void)
 {
+	__BKPT(0);
 }
 
 /**
@@ -135,7 +136,7 @@ void PendSV_Handler(void)
   * @retval None
   */
 /*void SysTick_Handler(void)
-{
+{                    
   
 }*/
 

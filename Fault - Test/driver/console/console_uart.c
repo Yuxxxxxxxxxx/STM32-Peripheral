@@ -123,11 +123,18 @@ void USART1_IRQHandler(void)
 		uint8_t data = USART_ReceiveData(USART1);
 		//USART_SendData(USART1, data);
 		//printf("received data: %c\r\n", data);
-        
-		UART_RX_BUF_BIN[UART_RX_CNT] = data;
-		UART_RX_CNT++;
-		
-        //USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+        //if (UART_RX_CNT < RX_BUFFER_SIZE)
+        //{
+            UART_RX_BUF_BIN[UART_RX_CNT] = data;
+            UART_RX_CNT++;
+        //}
+        USART_ClearITPendingBit(USART1, USART_IT_RXNE);
     }
+	//UART_RX_CNT = 0;
+}
+
+void bl_idle(void)
+{
+	// do nothing
 }
 

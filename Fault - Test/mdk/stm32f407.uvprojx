@@ -654,14 +654,14 @@
           <GroupName>third_lib\segger</GroupName>
           <Files>
             <File>
-              <FileName>SEGGER_HardFaultHandler.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\third_lib\segger\SEGGER_HardFaultHandler.c</FilePath>
-            </File>
-            <File>
               <FileName>HardFaultHandler.S</FileName>
               <FileType>2</FileType>
               <FilePath>..\third_lib\segger\HardFaultHandler.S</FilePath>
+            </File>
+            <File>
+              <FileName>SEGGER_HardFaultHandler.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\third_lib\segger\SEGGER_HardFaultHandler.c</FilePath>
             </File>
           </Files>
         </Group>
