@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,HSE_VALUE=8000000</Define>
               <Undefine></Undefine>
-              <IncludePath>..\app\inc;..\driver\button;..\driver\uart_fifo;..\driver\led;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\third_lib\segger</IncludePath>
+              <IncludePath>..\app\inc;..\driver\button;..\driver\uart_fifo;..\driver\led;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\third_lib\segger;..\driver\user_lib;..\driver\timer</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -389,11 +389,6 @@
               <FilePath>..\app\main.c</FilePath>
             </File>
             <File>
-              <FileName>utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\app\utils.c</FilePath>
-            </File>
-            <File>
               <FileName>board.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\app\board.c</FilePath>
@@ -417,6 +412,16 @@
               <FileName>uart_fifo.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\driver\uart_fifo\uart_fifo.c</FilePath>
+            </File>
+            <File>
+              <FileName>user_lib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\user_lib\user_lib.c</FilePath>
+            </File>
+            <File>
+              <FileName>timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\driver\timer\timer.c</FilePath>
             </File>
           </Files>
         </Group>

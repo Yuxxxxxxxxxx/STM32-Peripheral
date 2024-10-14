@@ -7,6 +7,7 @@
 #include "led.h"
 #include "button.h"
 #include "uart_fifo.h"
+#include "timer.h"
 
 extern void board_lowlevel_init(void);
 
@@ -14,10 +15,10 @@ int main(void)
 {
 	board_lowlevel_init();
 	
-	bl_delay_init();
-	bl_led_init();
-	bl_button_init();
-	bsp_InitUart();
+	bsp_led_init();
+	bsp_button_init();
+	bsp_uart_init();
+	bsp_timer_init();
 
 	uint8_t ucKeyCode;
 	uint8_t read;
@@ -30,26 +31,31 @@ int main(void)
 	
 	while (1)
 	{
-		if (comGetChar(COM1, &read))
+		if (com_get_char(COM1, &read))
 		{
 			switch(read)
 			{
 				case '1': 
-					comSendBuf(COM1, (uint8_t *)buf1, strlen(buf1));
+					com_send_buf(COM1, (uint8_t *)buf1, strlen(buf1));
 					break;
 				case '2':
-					comSendBuf(COM1, (uint8_t *)buf2, strlen(buf2));
+					com_send_buf(COM1, (uint8_t *)buf2, strlen(buf2));
 					break;
 				case '3':
-					comSendBuf(COM1, (uint8_t *)buf3, strlen(buf3));
+					com_send_buf(COM1, (uint8_t *)buf3, strlen(buf3));
 					break;
 				case '4':
-					comSendBuf(COM1, (uint8_t *)buf4, strlen(buf4));
+					com_send_buf(COM1, (uint8_t *)buf4, strlen(buf4));
 					break;
 				default:
 					printf("Error Code!\r\n");
 					break;
 			}
+		}
+		
+		if (bsp_button_pressed())
+		{
+			printf("Button clicked!!!\r\n");
 		}
 	}
 }

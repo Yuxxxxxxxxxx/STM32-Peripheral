@@ -1,15 +1,13 @@
-/*
-*********************************************************************************************************
-*
-*	模块名称 : 串口中断+FIFO驱动模块
-*	文件名称 : bsp_uart_fifo.h
-*	说    明 : 头文件
-*
-*	Copyright (C), 2015-2020, 安富莱电子 www.armfly.com
-*
-*********************************************************************************************************
-*/
-
+/******************************************************************************
+ * @file uart_fifo.h
+ * @author Yuxxxxxxxxxx (2936481298@qq.com)
+ * @brief  串口中断+FIFO驱动模块
+ * @version 0.1
+ * @date 2024-10-14
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+******************************************************************************/
 #ifndef _BSP_USART_FIFO_H_
 #define _BSP_USART_FIFO_H_
 
@@ -65,7 +63,7 @@ typedef enum
 	COM3 = 2,	/* USART3, PB10, PB11 */
 	COM4 = 3,	/* UART4, PC10, PC11 */
 	COM5 = 4,	/* UART5, PC12, PD2 */
-}COM_PORT_E;
+} com_port_t;
 
 /* 定义串口波特率和FIFO缓冲区大小，分为发送缓冲区和接收缓冲区, 支持全双工 */
 #if UART1_FIFO_EN == 1
@@ -84,6 +82,7 @@ typedef enum
 	#define UART3_BAUD			9600
 	#define UART3_TX_BUF_SIZE	1*1024
 	#define UART3_RX_BUF_SIZE	1*1024
+	#define RS485
 #endif
 
 #if UART4_FIFO_EN == 1
@@ -98,49 +97,61 @@ typedef enum
 	#define UART5_RX_BUF_SIZE	1*1024
 #endif
 
-/* 开关全局中断的宏 */
-#define ENABLE_INT()	__set_PRIMASK(0)	/* 使能全局中断 */
-#define DISABLE_INT()	__set_PRIMASK(1)	/* 禁止全局中断 */
+typedef struct 
+{
+	uint8_t *rx_buf;			/* 接收缓冲区 */
+	uint16_t rx_buf_size;		/* 接收缓冲区大小 */
+	
+	/* 必须增加 __IO 修饰,否则优化后会导致串口发送函数死机 */
+	__IO uint16_t rx_write_idx;	/* 接收缓冲区写指针 */
+	__IO uint16_t rx_read_idx;		/* 接收缓冲区读指针 */
+	__IO uint16_t rx_count;	/* 还未读取的新数据个数 */
+} uart_rx_t;
+
+typedef struct 
+{
+	uint8_t *tx_buf;			 /* 发送缓冲区 */
+	uint16_t tx_buf_size;		 /* 发送缓冲区大小 */
+
+	/* 必须增加 __IO 修饰,否则优化后会导致串口发送函数死机 */
+	__IO uint16_t tx_write_idx;	 /* 发送缓冲区写指针 */
+	__IO uint16_t tx_read_idx;   /* 发送缓冲区读指针 */
+	__IO uint16_t tx_count;	     /* 等待发送的数据个数 */
+} uart_tx_t;
+
+typedef struct
+{
+	void (*send_before)(void); 			/* 开始发送之前的回调函数指针（主要用于RS485切换到发送模式） */
+	void (*send_over)(void); 			/* 发送完毕的回调函数指针（主要用于RS485将发送模式切换为接收模式） */
+	void (*recive_new)(uint8_t _byte);	/* 串口收到数据的回调函数指针 */
+} uart_operations_t;
 
 /* 串口设备结构体 */
 typedef struct
 {
-	USART_TypeDef *uart;		/* STM32内部串口设备指针 */
-	uint8_t *pTxBuf;			/* 发送缓冲区 */
-	uint8_t *pRxBuf;			/* 接收缓冲区 */
-	uint16_t usTxBufSize;		/* 发送缓冲区大小 */
-	uint16_t usRxBufSize;		/* 接收缓冲区大小 */
+	USART_TypeDef *uart;  	     /* STM32内部串口设备指针 */
 	
-	__IO uint16_t usTxWrite;	/* 发送缓冲区写指针 */
-	__IO uint16_t usTxRead;		/* 发送缓冲区读指针 */
-	__IO uint16_t usTxCount;	/* 等待发送的数据个数 */
+	uart_rx_t ctrl_rx;  		 /* 接收控制器 */
+	uart_tx_t ctrl_tx;   	     /* 发送控制器 */
 
-	__IO uint16_t usRxWrite;	/* 接收缓冲区写指针 */
-	__IO uint16_t usRxRead;		/* 接收缓冲区读指针 */
-	__IO uint16_t usRxCount;	/* 还未读取的新数据个数 */
+	uart_operations_t uart_ops;  /* 串口操作函数 */
+} uart_t;
 
-	void (*SendBefor)(void); 	/* 开始发送之前的回调函数指针（主要用于RS485切换到发送模式） */
-	void (*SendOver)(void); 	/* 发送完毕的回调函数指针（主要用于RS485将发送模式切换为接收模式） */
-	void (*ReciveNew)(uint8_t _byte);	/* 串口收到数据的回调函数指针 */
-}UART_T;
+void bsp_uart_init(void);
+void com_send_buf(com_port_t _ucPort, uint8_t *_ucaBuf, uint16_t _usLen);
+void com_send_char(com_port_t _ucPort, uint8_t _ucByte);
+uint8_t com_get_char(com_port_t _ucPort, uint8_t *_pByte);
+void com_clear_tx_fifo(com_port_t _ucPort);
+void com_clear_rx_fifo(com_port_t _ucPort);
+void com_set_baud(com_port_t _ucPort, uint32_t _BaudRate);
 
-void bsp_InitUart(void);
-void comSendBuf(COM_PORT_E _ucPort, uint8_t *_ucaBuf, uint16_t _usLen);
-void comSendChar(COM_PORT_E _ucPort, uint8_t _ucByte);
-uint8_t comGetChar(COM_PORT_E _ucPort, uint8_t *_pByte);
-void comSendBuf(COM_PORT_E _ucPort, uint8_t *_ucaBuf, uint16_t _usLen);
-void comClearTxFifo(COM_PORT_E _ucPort);
-void comClearRxFifo(COM_PORT_E _ucPort);
-void comSetBaud(COM_PORT_E _ucPort, uint32_t _BaudRate);
-
-void USART_SetBaudRate(USART_TypeDef* USARTx, uint32_t BaudRate);
+void usart_set_baudrate(USART_TypeDef* USARTx, uint32_t BaudRate);
 
 #ifdef RS485
-void RS485_SendBuf(uint8_t *_ucaBuf, uint16_t _usLen);
-void RS485_SendStr(char *_pBuf);
-void RS485_SetBaud(uint32_t _baud);
+void rs485_send_buf(uint8_t *_ucaBuf, uint16_t _usLen);
+void rs485_send_str(char *_pBuf);
+void rs485_set_baud(uint32_t _baud);
 #endif
 
-#endif
+#endif /* __USART_FIFO_H */
 
-/***************************** 安富莱电子 www.armfly.com (END OF FILE) *********************************/
