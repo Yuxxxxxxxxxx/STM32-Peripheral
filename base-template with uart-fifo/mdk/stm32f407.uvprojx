@@ -337,9 +337,9 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,HSE_VALUE=8000000</Define>
+              <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,HSE_VALUE=8000000,DEBUG</Define>
               <Undefine></Undefine>
-              <IncludePath>..\app\inc;..\driver\button;..\driver\uart_fifo;..\driver\led;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\third_lib\segger;..\driver\user_lib;..\driver\timer</IncludePath>
+              <IncludePath>..\app\inc;..\driver\button;..\driver\uart_fifo;..\driver\led;..\firmware\cmsis\core;..\firmware\cmsis\device;..\firmware\driver\inc;..\third_lib\segger;..\driver\user_lib;..\driver\timer;..\third_lib\easylogger\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -667,6 +667,26 @@
               <FileName>HardFaultHandler.S</FileName>
               <FileType>2</FileType>
               <FilePath>..\third_lib\segger\HardFaultHandler.S</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>third_lib\easylogger</GroupName>
+          <Files>
+            <File>
+              <FileName>elog.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\third_lib\easylogger\src\elog.c</FilePath>
+            </File>
+            <File>
+              <FileName>elog_port.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\third_lib\easylogger\src\elog_port.c</FilePath>
+            </File>
+            <File>
+              <FileName>elog_utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\third_lib\easylogger\src\elog_utils.c</FilePath>
             </File>
           </Files>
         </Group>
