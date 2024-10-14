@@ -12,7 +12,7 @@ static bool led_state; // 指示led状态
  * @return 无
  * 
 ******************************************************************************/
-void bl_led_init(void)
+void bsp_led_init(void)
 {
     // PA5
     GPIO_InitTypeDef GPIO_InitStruct;
@@ -23,8 +23,8 @@ void bl_led_init(void)
     //GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
     GPIO_Init(GPIOE, &GPIO_InitStruct);
 
-    bl_led_off(GPIO_Pin_5);
-    bl_led_off(GPIO_Pin_6);
+    bsp_led_off(GPIO_Pin_5);
+    bsp_led_off(GPIO_Pin_6);
 }
 
 /******************************************************************************
@@ -35,7 +35,7 @@ void bl_led_init(void)
  * @return 无
  * 
 ******************************************************************************/
-void bl_led_set(bool on, uint32_t pin)
+void bsp_led_set(bool on, uint32_t pin)
 {
     led_state = on;
     GPIO_WriteBit(GPIOE, pin, on ? Bit_RESET : Bit_SET);
@@ -47,10 +47,10 @@ void bl_led_set(bool on, uint32_t pin)
  * @return 无
  * 
 ******************************************************************************/
-void bl_led_on(uint32_t pin)
+void bsp_led_on(uint32_t pin)
 {
     led_state = true;
-    bl_led_set(true, pin);
+    bsp_led_set(true, pin);
 }
 
 /******************************************************************************
@@ -59,10 +59,10 @@ void bl_led_on(uint32_t pin)
  * @return 无
  * 
 ******************************************************************************/
-void bl_led_off(uint32_t pin)
+void bsp_led_off(uint32_t pin)
 {
     led_state = false;
-    bl_led_set(false, pin);
+    bsp_led_set(false, pin);
 }
 
 /******************************************************************************
@@ -71,8 +71,8 @@ void bl_led_off(uint32_t pin)
  * @return 无
  * 
 ******************************************************************************/
-void bl_led_toggle(uint32_t pin)
+void bsp_led_toggle(uint32_t pin)
 {
     led_state = !led_state;
-    bl_led_set(led_state, pin);
+    bsp_led_set(led_state, pin);
 }

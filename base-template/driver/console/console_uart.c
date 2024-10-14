@@ -5,32 +5,31 @@
 #include "console_uart.h"
 #include <stdio.h>
 
-
-//加入以下代码,支持printf函数,而不需要选择use MicroLIB	  
+// 加入以下代码,支持printf函数,而不需要选择use MicroLIB
 #if 1
-#pragma import(__use_no_semihosting)             
-//标准库需要的支持函数                 
-struct __FILE 
-{ 
-	int handle; 
-}; 
- 
-FILE __stdout;       
-//定义_sys_exit()以避免使用半主机模式    
-void _sys_exit(int x) 
-{ 
-	x = x; 
-} 
-//重定义fputc函数 
-int fputc(int ch, FILE *f)
-{ 	
-	while((USART1->SR&0X40)==0);//循环发送,直到发送完毕   
-	USART1->DR = (u8) ch;
-	return ch;
-}
- 
-#endif
+#pragma import(__use_no_semihosting)
+// 标准库需要的支持函数
+struct __FILE
+{
+    int handle;
+};
 
+FILE __stdout;
+// 定义_sys_exit()以避免使用半主机模式
+void _sys_exit(int x)
+{
+    x = x;
+}
+// 重定义fputc函数
+int fputc(int ch, FILE *f)
+{
+    while ((USART1->SR & 0X40) == 0)
+        ; // 循环发送,直到发送完毕
+    USART1->DR = (u8)ch;
+    return ch;
+}
+
+#endif
 
 static void uart_pin_init(void)
 {
@@ -65,8 +64,8 @@ static void uart_lowlevel_init(void)
 
 static void uart_irq_init(void)
 {
-	NVIC_SetPriorityGrouping(NVIC_PriorityGroup_4);
-	
+    NVIC_SetPriorityGrouping(NVIC_PriorityGroup_4);
+
     NVIC_InitTypeDef NVIC_InitStructure;
     memset(&NVIC_InitStructure, 0, sizeof(NVIC_InitTypeDef));
 
@@ -79,14 +78,14 @@ static void uart_irq_init(void)
     USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
 }
 
-void bl_uart_init(void)
+void bsp_uart_init(void)
 {
     uart_pin_init();
     uart_lowlevel_init();
     uart_irq_init();
 }
 
-void bl_uart_deinit(void)
+void bsp_uart_deinit(void)
 {
     USART_Cmd(USART1, DISABLE);
     USART_DeInit(USART1);
@@ -95,39 +94,41 @@ void bl_uart_deinit(void)
 void uart_send(uint8_t data)
 {
     USART_SendData(USART1, data);
-    while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
+    while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET)
+        ;
 }
 
-void uart_sendstring( char *str)
+void uart_sendstring(char *str)
 {
-    unsigned int k=0;
-    do {
-        uart_send( *(str + k) );
+    unsigned int k = 0;
+    do
+    {
+        uart_send(*(str + k));
         k++;
-    } while (*(str + k)!='\0');
+    } while (*(str + k) != '\0');
 
     /* 等待发送完成 */
-    while (USART_GetFlagStatus(USART1, USART_FLAG_TC)==RESET) {
+    while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET)
+    {
     }
 }
 
-
-uint8_t UART_RX_BUF_BIN[RX_BUFFER_SIZE] __attribute__ ((at(0X20001000)));    
-uint32_t UART_RX_CNT=0;
+uint8_t UART_RX_BUF_BIN[RX_BUFFER_SIZE] __attribute__((at(0X20001000)));
+uint32_t UART_RX_CNT = 0;
 
 void USART1_IRQHandler(void)
 {
     if (USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)
     {
-        //uint8_t data = USART1->DR;
-		uint8_t data = USART_ReceiveData(USART1);
-		//USART_SendData(USART1, data);
-		//printf("received data: %c\r\n", data);
-        
-		UART_RX_BUF_BIN[UART_RX_CNT] = data;
-		UART_RX_CNT++;
-		
-        //USART_ClearITPendingBit(USART1, USART_IT_RXNE);
+        // uint8_t data = USART1->DR;
+        uint8_t data = USART_ReceiveData(USART1);
+        // USART_SendData(USART1, data);
+        // printf("received data: %c\r\n", data);
+
+        UART_RX_BUF_BIN[UART_RX_CNT] = data;
+        UART_RX_CNT++;
+
+        // USART_ClearITPendingBit(USART1, USART_IT_RXNE);
     }
 }
 

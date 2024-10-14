@@ -23,7 +23,7 @@ static uint32_t ticks; // 时钟滴答数
  * @return 无
  * 
 ******************************************************************************/
-void bl_delay_init(void)
+void bsp_delay_init(void)
 {
     SysTick_Config(SystemCoreClock / 1000); // 1ms定时器
 }
@@ -36,7 +36,7 @@ void bl_delay_init(void)
  * @return 无
  * 
 ******************************************************************************/
-void bl_delay_ms(uint32_t ms)
+void bsp_delay_ms(uint32_t ms)
 {
     uint32_t start = ticks;
     while (ticks - start < ms);
@@ -48,7 +48,7 @@ void bl_delay_ms(uint32_t ms)
  * @return uint32_t 
  * 
 ******************************************************************************/
-uint32_t bl_now(void)
+uint32_t bsp_now(void)
 {
     return ticks;
 }

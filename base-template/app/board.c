@@ -24,7 +24,7 @@ void board_lowlevel_init(void)
 
 void board_lowlevel_deinit(void)
 {
-	bl_uart_deinit();
+	bsp_uart_deinit();
 
 	SysTick->CTRL = 0;
 

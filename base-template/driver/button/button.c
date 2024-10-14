@@ -20,7 +20,7 @@
  * @return 无
  * 
 ******************************************************************************/
-void bl_button_init(void)
+void bsp_button_init(void)
 {
     // PA6
     GPIO_InitTypeDef GPIO_InitStruct;
@@ -37,7 +37,7 @@ void bl_button_init(void)
  * @return 是否按下按键 true/false
  * 
 ******************************************************************************/
-static bool bl_button_press(void)
+static bool button_press(void)
 {
     return GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_0) == Bit_RESET;
 }
@@ -48,12 +48,12 @@ static bool bl_button_press(void)
  * @return 是否按下按键 true/false
  * 
 ******************************************************************************/
-bool bl_button_pressed(void)
+bool bsp_button_pressed(void)
 {
-    if (bl_button_press())
+    if (button_press())
     {
-        bl_delay_ms(100);  // 消抖
-        return bl_button_press();
+		bsp_delay_ms(100);  // 消抖
+        return button_press();
     }
 
     return false;

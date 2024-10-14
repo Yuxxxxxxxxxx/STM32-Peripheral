@@ -15,8 +15,8 @@
 #include <stdbool.h>
 
 
-void bl_button_init(void);
-bool bl_button_pressed(void);
+void bsp_button_init(void);
+bool bsp_button_pressed(void);
 
 
 #endif /* __BL_BUTTON_H */

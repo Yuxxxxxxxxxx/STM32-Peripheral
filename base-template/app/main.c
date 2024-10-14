@@ -13,10 +13,10 @@ int main(void)
 {
 	board_lowlevel_init();
 	
-	bl_delay_init();
-	bl_led_init();
-	bl_button_init();
-	bl_uart_init();
+	bsp_delay_init();
+	bsp_led_init();
+	bsp_button_init();
+	bsp_uart_init();
 	
 	while (1)
 	{
