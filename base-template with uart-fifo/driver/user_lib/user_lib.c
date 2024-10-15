@@ -512,9 +512,7 @@ uint32_t ascii_to_uint32(char *_ascii)
 	return lResult;
 }
 
-#include "modbus_host.h"
 void bsp_Idle(void)
 {
 	// 当 CPU 空闲时会执行这个函数
-	modh_poll();
 }
