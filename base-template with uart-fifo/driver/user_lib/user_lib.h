@@ -23,30 +23,30 @@
 int str_len(char *_str);
 void str_cpy(char *_tar, char *_src);
 int str_cmp(char * s1, char * s2);
-void mem_set(char *_tar, char _data, int _len);
+void mem_set(char *_tar, char _data, int _size);
 
 /* 数字-字符串转换 */
-void int_to_str(int _iNumber, char *_pBuf, unsigned char _len);
-int str_to_int(char *_pStr);
+void int_to_str(int _number, char *_buf, unsigned char _size);
+int str_to_int(char *_str);
 
 /* 字节序转换-uint16_t */
-uint16_t be_buf_to_uint16(uint8_t *_pBuf);
-uint16_t le_buf_to_uint16(uint8_t *_pBuf);
+uint16_t be_buf_to_uint16(uint8_t *_buf);
+uint16_t le_buf_to_uint16(uint8_t *_buf);
 
 /* 字节序转换-uint32_t */
-uint32_t be_buf_to_uint32(uint8_t *_pBuf);
-uint32_t le_buf_to_uint32(uint8_t *_pBuf);
+uint32_t be_buf_to_uint32(uint8_t *_buf);
+uint32_t le_buf_to_uint32(uint8_t *_buf);
 
 /* CRC16-Modbus */
-uint16_t crc16_modbus(uint8_t *_pBuf, uint16_t _usLen) ;
+uint16_t crc16_modbus(uint8_t *_buf, uint16_t _size) ;
 
 /* 两点距离计算 */
 int32_t  cacul_two_point(int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t x);
 
 /* 数字格式转换 */
 char bcd_to_char(uint8_t _bcd);
-void hex_to_ascll(uint8_t * _pHex, char *_pAscii, uint16_t _BinBytes);
-uint32_t ascii_to_uint32(char *pAscii);
+void hex_to_ascll(uint8_t * _hex, char *_ascii, uint16_t _size);
+uint32_t ascii_to_uint32(char *_ascii);
 
 /* CPU 空闲任务 */
 void bsp_Idle(void);

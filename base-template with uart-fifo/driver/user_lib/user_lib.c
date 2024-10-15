@@ -129,14 +129,14 @@ int str_cmp(char * s1, char * s2)
  * 
  * @param[in]  _tar    :    目标缓冲区
  * @param[in]  _data   :    带设置的数据
- * @param[in]  _len    :    要设置缓冲区的长度
+ * @param[in]  _size    :    要设置缓冲区的长度
  * 
  * @return     none
  * 
 ******************************************************************************/
-void mem_set(char *_tar, char _data, int _len)
+void mem_set(char *_tar, char _data, int _size)
 {
-	while (_len--)
+	while (_size--)
 	{
 		*_tar++ = _data;
 	}
@@ -145,48 +145,48 @@ void mem_set(char *_tar, char _data, int _len)
 /******************************************************************************
  * @brief      整形转字符串
  * 
- * @param[in]  _iNumber   :    数字   
- * @param[in]  _pBuf      :    目标缓冲区，存放字符串
- * @param[in]  _len       :    字符串长度
+ * @param[in]  _number   :    数字   
+ * @param[in]  _buf      :    目标缓冲区，存放字符串
+ * @param[in]  _size     :    字符串长度
  * 
  * @return     none
  * 
 ******************************************************************************/
-void int_to_str(int _iNumber, char *_pBuf, unsigned char _len)
+void int_to_str(int _number, char *_buf, unsigned char _size)
 {
 	unsigned char i;
 	int iTemp;
 
-	if (_iNumber < 0)	/* 负数 */
+	if (_number < 0)	/* 负数 */
 	{
-		iTemp = -_iNumber;	/* 转为正数 */
+		iTemp = -_number;	/* 转为正数 */
 	}
 	else
 	{
-		iTemp = _iNumber;
+		iTemp = _number;
 	}
 
-	mem_set(_pBuf, ' ',_len);
+	mem_set(_buf, ' ',_size);
 
 	/* 将整数转换为ASCII字符串 */
-	for (i = 0; i < _len; i++)
+	for (i = 0; i < _size; i++)
 	{
-		_pBuf[_len - 1 - i] = (iTemp % 10) + '0';
+		_buf[_size - 1 - i] = (iTemp % 10) + '0';
 		iTemp = iTemp / 10;
 		if (iTemp == 0)
 		{
 			break;
 		}
 	}
-	_pBuf[_len] = 0;
+	_buf[_size] = 0;
 
-	if (_iNumber < 0)	/* 负数 */
+	if (_number < 0)	/* 负数 */
 	{
-		for (i = 0; i < _len; i++)
+		for (i = 0; i < _size; i++)
 		{
-			if ((_pBuf[i] == ' ') && (_pBuf[i + 1] != ' '))
+			if ((_buf[i] == ' ') && (_buf[i + 1] != ' '))
 			{
-				_pBuf[i] = '-';
+				_buf[i] = '-';
 				break;
 			}
 		}
@@ -196,12 +196,12 @@ void int_to_str(int _iNumber, char *_pBuf, unsigned char _len)
 /******************************************************************************
  * @brief     将ASCII码字符串转换成整数。 遇到小数点自动越过。
  * 
- * @param[in]  _pStr    :    待转换的ASCII码串. 为非0-9的字符。可以以逗号，#或0结束。
+ * @param[in]  _str     :    待转换的ASCII码串. 为非0-9的字符。可以以逗号，#或0结束。
  * 
  * @return     int      :    二进制整数值
  * 
 ******************************************************************************/
-int str_to_int(char *_pStr)
+int str_to_int(char *_str)
 {
 	unsigned char flag;
 	char *p;
@@ -209,7 +209,7 @@ int str_to_int(char *_pStr)
 	unsigned char  i;
 	unsigned char  ucTemp;
 
-	p = _pStr;
+	p = _str;
 	if (*p == '-')
 	{
 		flag = 1;	/* 负数 */
@@ -250,60 +250,60 @@ int str_to_int(char *_pStr)
 /******************************************************************************
  * @brief      将2字节数组(大端Big Endian次序，高字节在前)转换为16位整数
  * 
- * @param[in]  _pBuf    :    数组
+ * @param[in]  _buf    :    数组
  * 
  * @return     uint16_t :    16位整数值
  * 
 ******************************************************************************/
-uint16_t be_buf_to_uint16(uint8_t *_pBuf)
+uint16_t be_buf_to_uint16(uint8_t *_buf)
 {
-    return (((uint16_t)_pBuf[0] << 8) | _pBuf[1]);
+    return (((uint16_t)_buf[0] << 8) | _buf[1]);
 }
 
 /******************************************************************************
  * @brief     将2字节数组(小端Little Endian，低字节在前)转换为16位整数
  * 
- * @param[in]  _pBuf    :    数组
+ * @param[in]  _buf    :    数组
  * 
  * @return     uint16_t :    16位整数值 
  * 
 ******************************************************************************/
-uint16_t le_buf_to_uint16(uint8_t *_pBuf)
+uint16_t le_buf_to_uint16(uint8_t *_buf)
 {
-    return (((uint16_t)_pBuf[1] << 8) | _pBuf[0]);
+    return (((uint16_t)_buf[1] << 8) | _buf[0]);
 }
 
 /******************************************************************************
  * @brief 	   将4字节数组(大端Big Endian次序，高字节在前)转换为16位整数
  * 
- * @param[in]  _pBuf    :    数组
+ * @param[in]  _buf    :    数组
  * 
  * @return     uint32_t :    16位整数值 
  * 
 ******************************************************************************/
-uint32_t be_buf_to_uint32(uint8_t *_pBuf)
+uint32_t be_buf_to_uint32(uint8_t *_buf)
 {
-    return (((uint32_t)_pBuf[0] << 24) | ((uint32_t)_pBuf[1] << 16) | ((uint32_t)_pBuf[2] << 8) | _pBuf[3]);
+    return (((uint32_t)_buf[0] << 24) | ((uint32_t)_buf[1] << 16) | ((uint32_t)_buf[2] << 8) | _buf[3]);
 }
 
 /******************************************************************************
  * @brief 	  将4字节数组(小端Little Endian，低字节在前)转换为16位整数
  * 
- * @param[in]  _pBuf    :    数组
+ * @param[in]  _buf    :    数组
  * 
  * @return 	   uint32_t :    16位整数值
  * 
 ******************************************************************************/
-uint32_t le_buf_to_uint32(uint8_t *_pBuf)
+uint32_t le_buf_to_uint32(uint8_t *_buf)
 {
-    return (((uint32_t)_pBuf[3] << 24) | ((uint32_t)_pBuf[2] << 16) | ((uint32_t)_pBuf[1] << 8) | _pBuf[0]);
+    return (((uint32_t)_buf[3] << 24) | ((uint32_t)_buf[2] << 16) | ((uint32_t)_buf[1] << 8) | _buf[0]);
 }
 
 /******************************************************************************
  * @brief 	   计算CRC。 用于Modbus协议。
  * 
- * @param[in]  _pBuf     :     参与校验的数据
- * @param[in]  _usLen    :     数据长度
+ * @param[in]  _buf     :     参与校验的数据
+ * @param[in]  _size    :     数据长度
  * 
  * @return     uint16_t  :     16位整数值。 对于Modbus ，此结果高字节先传送，低字节后传送。
  * 
@@ -315,15 +315,15 @@ uint32_t le_buf_to_uint32(uint8_t *_pBuf)
  *        于报文用于发送；
  * 
 ******************************************************************************/
-uint16_t crc16_modbus(uint8_t *_pBuf, uint16_t _usLen)
+uint16_t crc16_modbus(uint8_t *_buf, uint16_t _size)
 {
 	uint8_t ucCRCHi = 0xFF; /* 高CRC字节初始化 */
 	uint8_t ucCRCLo = 0xFF; /* 低CRC 字节初始化 */
 	uint16_t usIndex;  /* CRC循环中的索引 */
 
-    while (_usLen--)
+    while (_size--)
     {
-		usIndex = ucCRCHi ^ *_pBuf++; /* 计算CRC */
+		usIndex = ucCRCHi ^ *_buf++; /* 计算CRC */
 		ucCRCHi = ucCRCLo ^ s_crc_high[usIndex];
 		ucCRCLo = s_crc_low[usIndex];
     }
@@ -375,42 +375,42 @@ char bcd_to_char(uint8_t _bcd)
  * @brief     将二进制数组转换为16进制格式的ASCII字符串。每个2个ASCII字符后保留1个空格。
  *			  0x12 0x34 转化为 0x31 0x32 0x20 0x33 0x34 0x00  即 "1234"
  * 
- * @param[in]  _pHex       :     输入的数据，二进制数组
- * @param[in]  _pAscii     :     存放转换结果, ASCII字符串，0结束。1个二进制对应2个ASCII字符.
- * @param[in]  _BinBytes   :     二进制数组的长度
+ * @param[in]  _hex       :     输入的数据，二进制数组
+ * @param[in]  _ascii     :     存放转换结果, ASCII字符串，0结束。1个二进制对应2个ASCII字符.
+ * @param[in]  _size      :     二进制数组的长度
  * 
  * @return     none
  * 
 ******************************************************************************/
-void hex_to_ascll(uint8_t * _pHex, char *_pAscii, uint16_t _BinBytes)
+void hex_to_ascll(uint8_t * _hex, char *_ascii, uint16_t _size)
 {
 	uint16_t i;
 	
-	if (_BinBytes == 0)
+	if (_size == 0)
 	{
-		_pAscii[0] = 0;
+		_ascii[0] = 0;
 	}
 	else
 	{
-		for (i = 0; i < _BinBytes; i++)
+		for (i = 0; i < _size; i++)
 		{
-			_pAscii[3 * i] = bcd_to_char(_pHex[i] >> 4);
-			_pAscii[3 * i + 1] = bcd_to_char(_pHex[i] & 0x0F);
-			_pAscii[3 * i + 2] = ' ';
+			_ascii[3 * i] = bcd_to_char(_hex[i] >> 4);
+			_ascii[3 * i + 1] = bcd_to_char(_hex[i] & 0x0F);
+			_ascii[3 * i + 2] = ' ';
 		}
-		_pAscii[3 * (i - 1) + 2] = 0;
+		_ascii[3 * (i - 1) + 2] = 0;
 	}
 }
 
 /******************************************************************************
  * @brief      变长的 ASCII 字符转换为32位整数  ASCII 字符以空格或者0结束 。 支持16进制和10进制输入
  * 
- * @param[in]  pAscii    :    要转换的ASCII码
+ * @param[in]  _ascii    :    要转换的ASCII码
  * 
  * @return     uint32_t  :    转换得到的整数
  * 
 ******************************************************************************/
-uint32_t ascii_to_uint32(char *pAscii)
+uint32_t ascii_to_uint32(char *_ascii)
 {
 	char i;
 	char bTemp;
@@ -422,7 +422,7 @@ uint32_t ascii_to_uint32(char *pAscii)
 
 	/* 判断是否是16进制数 */
 	bIsHex = 0;
-	if ((pAscii[0] == '0') && ((pAscii[1] == 'x') || (pAscii[1] == 'X')))
+	if ((_ascii[0] == '0') && ((_ascii[1] == 'x') || (_ascii[1] == 'X')))
 	{
 		bIsHex=1;
 	}
@@ -437,7 +437,7 @@ uint32_t ascii_to_uint32(char *pAscii)
 		/* 前导去0 */
 		for (i = 0; i < 8; i++)
 		{
-			bTemp = pAscii[i];
+			bTemp = _ascii[i];
 			if (bTemp != '0')
 				break;
 		}
@@ -445,7 +445,7 @@ uint32_t ascii_to_uint32(char *pAscii)
 
 		for (i = 0; i < 10; i++)
 		{
-			if ((pAscii[i] < '0') || (pAscii[i] > '9'))
+			if ((_ascii[i] < '0') || (_ascii[i] > '9'))
 				break;
 			lBitValue = lBitValue * 10;
 		}
@@ -455,7 +455,7 @@ uint32_t ascii_to_uint32(char *pAscii)
 			lBitValue=1;
 		for (i = bZeroLen; i < bLen; i++)
 		{
-			lResult += (pAscii[i] - '0') * lBitValue;
+			lResult += (_ascii[i] - '0') * lBitValue;
 			lBitValue /= 10;
 		}
 	}
@@ -467,14 +467,14 @@ uint32_t ascii_to_uint32(char *pAscii)
 		/* 前导去0 */
 		for (i = 0; i < 8; i++)
 		{
-			bTemp = pAscii[i + 2];
+			bTemp = _ascii[i + 2];
 			if(bTemp!='0')
 				break;
 		}
 		bZeroLen = i;
 		for (; i < 8; i++)
 		{
-			bTemp=pAscii[i+2];
+			bTemp=_ascii[i+2];
 			if (((bTemp >= 'A') && (bTemp <= 'F')) ||
 				((bTemp>='a')&&(bTemp<='f')) ||
 				((bTemp>='0')&&(bTemp<='9')) )
@@ -492,7 +492,7 @@ uint32_t ascii_to_uint32(char *pAscii)
 		bLen = i;
 		for (i = bZeroLen; i < bLen; i++)
 		{
-			bTemp = pAscii[i + 2];
+			bTemp = _ascii[i + 2];
 			if ((bTemp >= 'A') && (bTemp <= 'F'))
 			{
 				bTemp -= 0x37;
@@ -512,7 +512,9 @@ uint32_t ascii_to_uint32(char *pAscii)
 	return lResult;
 }
 
+#include "modbus_host.h"
 void bsp_Idle(void)
 {
 	// 当 CPU 空闲时会执行这个函数
+	modh_poll();
 }
