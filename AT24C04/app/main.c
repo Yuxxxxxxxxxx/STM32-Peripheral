@@ -26,6 +26,7 @@ uint8_t test_array2[3 * AT24CX_PAGE_SIZE]; //     AT24C04时，一个页面有24
 
 
 #define TEST_NUM
+//#define TEST_STRING
 
 #ifdef TEST_NUM
 void at24c04_test_num(void)
@@ -48,8 +49,8 @@ void at24c04_test_num(void)
 
 	if (at24cx_checkok() == 1) // 如果检测到I2C器件存在
 	{
-		at24cx_writebytes(test_array1, 80, 3 * AT24CX_PAGE_SIZE); // 从I2C的地址80处开始写3页字节（测试跨页连续写）
-		at24cx_readbytes(test_array2, 80, 3 * AT24CX_PAGE_SIZE);  // 从I2C的地址80处开始读3页字节（测试跨页连续读）
+		at24cx_writebytes(test_array1, 0, 3 * AT24CX_PAGE_SIZE); // 从I2C的地址80处开始写3页字节（测试跨页连续写）
+		at24cx_readbytes(test_array2, 0, 3 * AT24CX_PAGE_SIZE);  // 从I2C的地址80处开始读3页字节（测试跨页连续读）
 	}
 
 	for (i = 0; i < sizeof(test_array2); ++i)
@@ -65,7 +66,7 @@ void at24c04_test_string(void)
 	uint8_t data[13] = "hello world!"; //{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 	uint8_t res[13] = { 0 };
 
-	if (at24cv_checkok() == 1)
+	if (at24cx_checkok() == 1)
 	{
 		at24cx_writebytes(data, 80, sizeof(data));
 		at24cx_readbytes(res, 80, sizeof(data));
