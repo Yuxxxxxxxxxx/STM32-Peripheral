@@ -60,14 +60,14 @@ uint8_t i2c_err_callback(uint8_t err_code)
 }
 
 // 最大值，因为AT24C04的最大容量就是4Kb=512*8，数组为 8*8（页大小）*64（大小）
-#define TEST_SIZE 3
+#define TEST_SIZE 4
 
 uint8_t test_array1[TEST_SIZE * AT24CX_PAGE_SIZE]; // 注：AT24C04时，AT24CX_PAGE_SIZE=8
 uint8_t test_array2[TEST_SIZE * AT24CX_PAGE_SIZE]; //     AT24C04时，一个页面有24个字节
 
 
-//#define TEST_NUM 1
-#define TEST_STRING
+#define TEST_NUM 1
+//#define TEST_STRING
 
 #ifdef TEST_NUM
 void at24c04_test_page_write(void)
@@ -78,16 +78,16 @@ void at24c04_test_page_write(void)
 		test_array1[i] = 100 + i;
 	}
 
-	memset(test_array2, 0x00, 3 * AT24CX_PAGE_SIZE);
+	memset(test_array2, 0x00, 4 * AT24CX_PAGE_SIZE);
 
 	/** 一次只能写入16个字节 */
-	at24cx_write_page(test_array1, 0, 2 * AT24CX_PAGE_SIZE);   
+	at24cx_write_page(test_array1, 0, AT24CX_PAGE_SIZE);   
 	bl_delay_ms(100);
 	at24cx_write_page(test_array1, 16, AT24CX_PAGE_SIZE);
 	
 	bl_delay_ms(100);
 	
-	at24cx_read_buf(test_array2, 0, 3 * AT24CX_PAGE_SIZE);
+	at24cx_read_buf(test_array2, 0, 4 * AT24CX_PAGE_SIZE);
 
 	for (i = 0; i < sizeof(test_array2); ++i)
 	{

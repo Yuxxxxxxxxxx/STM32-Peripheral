@@ -30,7 +30,6 @@
 #define AT24C04
  
  
- 
 #ifdef AT24C01
 	#define AT24CX_MODEL_NAME		"AT24C01"
 	#define AT24CX_DEV_ADDR			0xA0		/* 设备地址 */
@@ -39,9 +38,7 @@
 	#define AT24CX_ADDR_BYTES		1			/* 地址字节个数 */
 	#define AT24CX_ADDR_A8			0			/* 地址字节的高8bit不在首字节 */
 #endif
- 
- 
- 
+  
 #ifdef AT24C02
 	#define AT24CX_MODEL_NAME		"AT24C02"
 	#define AT24CX_DEV_ADDR			0xA0		/* 设备地址 */
@@ -51,18 +48,14 @@
 	#define AT24CX_ADDR_A8			0			/* 地址字节的高8bit不在首字节 */
 #endif
  
- 
- 
 #ifdef AT24C04
 	#define AT24CX_MODEL_NAME		"AT24C04"
 	#define AT24CX_DEV_ADDR			0xA0		/* 设备地址 */
-	#define AT24CX_PAGE_SIZE		8			/* 页面大小(字节) */
+	#define AT24CX_PAGE_SIZE		16			/* 页面大小(字节) */
 	#define AT24CX_SIZE				512			/* 总容量(字节) */
 	#define AT24CX_ADDR_BYTES		1			/* 地址字节个数 */
 	#define AT24CX_ADDR_A8			1			/* 地址字节的高8bit在首字节 */
 #endif
- 
- 
  
 #ifdef AT24C08
 	#define AT24CX_MODEL_NAME		"AT24C08"
@@ -72,10 +65,7 @@
 	#define AT24CX_ADDR_BYTES		2			/* 地址字节个数 */
 	#define AT24CX_ADDR_A8			1			/* 地址字节的高8bit在首字节 */
 #endif
- 
- 
- 
- 
+  
 #ifdef AT24C16
 	#define AT24CX_MODEL_NAME		"AT24C16"
 	#define AT24CX_DEV_ADDR			0xA0		/* 设备地址 */
@@ -84,18 +74,15 @@
 	#define AT24CX_ADDR_BYTES		2			/* 地址字节个数 */
 	#define AT24CX_ADDR_A8			1			/* 地址字节的高8bit在首字节 */
 #endif
- 
- 
- 
+  
 #ifdef AT24C32
 	#define AT24CX_MODEL_NAME		"AT24C32"
 	#define AT24CX_DEV_ADDR			0xA0		/* 设备地址 */
 	#define AT24CX_PAGE_SIZE		32			/* 页面大小(字节) */
 	#define AT24CX_SIZE				(128*32)	/* 总容量(字节) */
 	#define AT24CX_ADDR_BYTES		2			/* 地址字节个数 */
-	#define AT24CX_ADDR_A8			1			/* 地址字节的高8bit在首字节 */
+	#define AT24CX_ADDR_A8			0			/* 地址字节的高8bit在首字节 */
 #endif
- 
  
 #ifdef AT24C64
 	#define AT24CX_MODEL_NAME		"AT24C64"
@@ -103,10 +90,8 @@
 	#define AT24CX_PAGE_SIZE		32			/* 页面大小(字节) */
 	#define AT24CX_SIZE				(256*32)	/* 总容量(字节) */
 	#define AT24CX_ADDR_BYTES		2			/* 地址字节个数 */
-	#define AT24CX_ADDR_A8			1			/* 地址字节的高8bit在首字节 */
+	#define AT24CX_ADDR_A8			0			/* 地址字节的高8bit在首字节 */
 #endif
- 
- 
  
 #ifdef AT24C128
 	#define AT24CX_MODEL_NAME		"AT24C128"
@@ -116,9 +101,7 @@
 	#define AT24CX_ADDR_BYTES		2			/* 地址字节个数 */
 	#define AT24CX_ADDR_A8			0			/* 地址字节的高8bit不在首字节 */
 #endif
- 
- 
- 
+  
 #ifdef AT24C256
 	#define AT24CX_MODEL_NAME		"AT24C256"
 	#define AT24CX_DEV_ADDR			0xA0		/* 设备地址 */
@@ -127,9 +110,7 @@
 	#define AT24CX_ADDR_BYTES		2			/* 地址字节个数 */
 	#define AT24CX_ADDR_A8			0			/* 地址字节的高8bit不在首字节 */
 #endif
- 
- 
- 
+  
 #ifdef AT24C512
 	#define AT24CX_MODEL_NAME		"AT24C512"
 	#define AT24CX_DEV_ADDR			0xA0		/* 设备地址 */
